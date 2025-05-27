@@ -26,7 +26,7 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 8,
     validate: {
-      function(cPass) {
+      validator:function(cPass) {
         return this.password === cPass;
       },
       message: "cPass does not match !!!",
