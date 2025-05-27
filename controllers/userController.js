@@ -49,7 +49,7 @@ exports.getuserById = async (req,res)=>{
 
 exports.updateUser = async (req,res)=>{
     try {
-        const user = await User.findByIdAndUpdate(req.params.id,req.body)
+        const user = await User.findByIdAndUpdate(req.params.id,req.body,{new:true})
         res.status(200).json({
             message:"User updated !!!",
             data:{user}
