@@ -51,8 +51,10 @@ exports.signIn = async (req, res) => {
         message: "password incorrect !!!!",
       });
     }
+    const token = createToken(user._id, user.name);
     res.status(201).json({
       message: "Logged in !!!",
+      token,
     });
   } catch (error) {
     res.status(400).json({
