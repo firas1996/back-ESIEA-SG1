@@ -6,6 +6,11 @@ const userSchema = mongoose.Schema({
     type: String,
     required: true,
   },
+  role: {
+    type: String,
+    enum: ["user", "admin"],
+    default: "user",
+  },
   age: {
     type: Number,
   },
@@ -26,7 +31,7 @@ const userSchema = mongoose.Schema({
     required: true,
     minlength: 8,
     validate: {
-      validator:function(cPass) {
+      validator: function (cPass) {
         return this.password === cPass;
       },
       message: "cPass does not match !!!",

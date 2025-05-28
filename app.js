@@ -1,7 +1,8 @@
 const express = require("express");
 const dotenv = require("dotenv");
 const mongoose = require("mongoose");
-const userRouter = require('./routes/userRoutes')
+const cors = require("cors");
+const userRouter = require("./routes/userRoutes");
 
 dotenv.config({ path: "./.env" });
 
@@ -16,8 +17,9 @@ mongoose
 
 const app = express();
 
-app.use(express.json())
-app.use('/users',userRouter)
+app.use(cors());
+app.use(express.json());
+app.use("/users", userRouter);
 
 const port = 1122;
 
