@@ -1,4 +1,11 @@
 const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
+
+const createToken = (id, name) => {
+  return jwt.sign({ id, name }, process.env.SECRET_KEY, {
+    expiresIn: "30d",
+  });
+};
 
 exports.signUp = async (req, res) => {
   try {
@@ -13,6 +20,39 @@ exports.signUp = async (req, res) => {
     res.status(201).json({
       message: "User created !!!",
       data: { newUser },
+    });
+  } catch (error) {
+    res.status(400).json({
+      message: "Fail !!",
+      error: error,
+    });
+  }
+};
+
+exports.signIn = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    // 1)
+    if (!email || !password) {
+      return res.status(400).json({
+        message: "email and password are required !!!!",
+      });
+    }
+    // 2)
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(400).json({
+        message: "user does not exist !!!!",
+      });
+    }
+    // 3)
+    if (!(await user.verifPassword(password, user.password))) {
+      return res.status(400).json({
+        message: "password incorrect !!!!",
+      });
+    }
+    res.status(201).json({
+      message: "Logged in !!!",
     });
   } catch (error) {
     res.status(400).json({
